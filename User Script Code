@@ -1,0 +1,67 @@
+//// ==UserScript==
+// @name         Twitter Ad Blocker Advanced
+// @namespace    Johnathon M. Horner
+// @version      0.1.0
+// @description  Advanced techniques to block ads on Twitter
+// @author       Johnathon M. Horner
+// @match        https://twitter.com/*
+// @grant        Creative Commons 4.0 International
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    // Function to hide elements by text content
+    function hideElementsByText(selector, text) {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(element => {
+            if (element.textContent.trim().includes(text)) {
+                element.style.display = "none";
+            }
+        });
+    }
+
+    // Function to hide elements by attributes and class names
+    function hideElementsByAttributes(selector) {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(element => {
+            element.style.display = "none";
+        });
+    }
+
+    // Function to process added nodes for ads
+    function processAds(addedNodes) {
+        addedNodes.forEach(node => {
+            if (!node.querySelectorAll) return; // Skip non-elements
+
+            // Call all your blocking functions here:
+            hideElementsByText("span[aria-label='Promoted Tweet']", "Promoted Tweet");
+            hideElementsByText("span[aria-label='Ad']", "Ad");
+            hideElementsByAttributes('[data-testid="placementTracking"]'); // Example
+            // Add more rules...
+        });
+    } 
+
+    // Function to initialize ad blocking on page load
+    function initializeAdBlocking() {
+        processAds(document.querySelectorAll('*'));
+        observer.observe(targetNode, { childList: true, subtree: true });
+    }
+
+    // MutationObserver for dynamic changes
+    const targetNode = document.body; // Or a more specific container
+    const observer = new MutationObserver(mutations => {
+        mutations.forEach(mutation => {
+            // Check for added nodes and apply blocking rules
+            processAds(mutation.addedNodes); 
+        });
+    });
+
+    // Initialize ad blocking on page load
+    initializeAdBlocking();
+})();
+ ==UserScript==
+// @name     Twitter Ad Blocker Advanced
+// @version  0.1.0
+// @grant    Creative Commons 4.0 International
+// ==/UserScript==
