@@ -1,0 +1,1 @@
+An advanced ad-blocker for Twitter, X, or whatever Elon Muskynuts decides to call it nowadays. I've tested it with my own account and it works lovely. The code is a user script compatible with Grease Monkey, Tamper Monkey, etc.
